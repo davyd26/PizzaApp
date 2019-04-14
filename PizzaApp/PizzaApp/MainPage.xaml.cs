@@ -23,7 +23,19 @@ namespace PizzaApp
                 new Pizza() { Nom = "Carnivore", Ingredients = new List<string>() { "fromage de chèvre", "oignons", "crème fraiche", "thym" }, Prix = 12 }
             };
 
-            //maListePizzas.
+            maListePizzas.ItemsSource = pizzas;
+            maListePizzas.ItemSelected += ListeArticles_ItemSelected;
+        }
+
+        private void ListeArticles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (maListePizzas.SelectedItem != null)
+            {
+                Pizza item = maListePizzas.SelectedItem as Pizza;
+
+                DisplayAlert(item.Nom, item.Nom, "OK");
+                maListePizzas.SelectedItem = null;
+            }
         }
     }
 }
