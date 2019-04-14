@@ -4,11 +4,23 @@
              xmlns:local="clr-namespace:PizzaApp"
              x:Class="PizzaApp.MainPage">
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <NavigationPage.TitleView>
+        <StackLayout HorizontalOptions="Center" 
+				Margin="{OnPlatform iOS='0,0,25,0', Android='0,0,20,0', Default=0}"
+				Orientation="Horizontal">
 
+            <Image Source="pizza_logo.png" HeightRequest="40" />
+            <Label Text="Pizzas" 
+			FontAttributes="Bold"
+			TextColor="White" VerticalOptions="Center" />
+        </StackLayout>
+
+    </NavigationPage.TitleView>
+    
+    <StackLayout>
+        <ListView x:Name="maListePizzas">
+            
+            
+        </ListView>
+    </StackLayout>
 </ContentPage>

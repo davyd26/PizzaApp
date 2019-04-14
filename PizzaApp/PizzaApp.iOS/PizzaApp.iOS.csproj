@@ -150,6 +150,66 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon58.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon60.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon76.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon87.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon120.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon152.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon167.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon180.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Icon40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="hd47.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="hd55.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="iphoneX.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="iphoneXMax.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="iPhoneXR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="retina4.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\PizzaApp\PizzaApp.projitems" Label="Shared" />
 </Project>
