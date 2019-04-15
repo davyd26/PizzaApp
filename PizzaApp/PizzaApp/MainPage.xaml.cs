@@ -1,7 +1,9 @@
-﻿using PizzaApp.Model;
+﻿using Newtonsoft.Json;
+using PizzaApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -16,26 +18,25 @@ namespace PizzaApp
         {
             InitializeComponent();
 
-            pizzas = new List<Pizza>
+            string pizzasStr = string.Empty;
+            using (var webClient = new WebClient())
             {
-                new Pizza() { Nom = "Végétarienne", Ingredients = new List<string>() { "tomate", "poivrons", "oignons" }, Prix = 7 },
-                new Pizza() { Nom = "Montagnarde", Ingredients = new List<string>() { "reblochon", "pomme de terre", "oignons", "crème fraiche" }, Prix = 11 },
-                new Pizza() { Nom = "Carnivore", Ingredients = new List<string>() { "fromage de chèvre", "oignons", "crème fraiche", "thym" }, Prix = 12 }
-            };
+                try
+                {
+                    pizzasStr = webClient.DownloadString("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j");
+                }
+                catch (Exception ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert("Erreur", "Une erreur s'est produite : " + ex.Message, "OK");
+                    });
+                }
+            }
+
+            pizzas = JsonConvert.DeserializeObject<List<Pizza>>(pizzasStr);
 
             maListePizzas.ItemsSource = pizzas;
-            maListePizzas.ItemSelected += ListeArticles_ItemSelected;
-        }
-
-        private void ListeArticles_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (maListePizzas.SelectedItem != null)
-            {
-                Pizza item = maListePizzas.SelectedItem as Pizza;
-
-                DisplayAlert(item.Nom, item.Nom, "OK");
-                maListePizzas.SelectedItem = null;
-            }
         }
     }
 }
