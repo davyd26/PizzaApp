@@ -17,16 +17,26 @@ namespace PizzaApp
         {
             InitializeComponent();
 
+            maListePizzas.RefreshCommand = new Command(() =>
+            {
+                maListePizzas.IsRefreshing = true;
+                RefreshList();
+                maListePizzas.IsRefreshing = false;
+            });
+
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
             maListePizzas.IsVisible = false;
             waitLayout.IsVisible = true;
-
-            //maListePizzas.RefreshCommand = new 
 
             using (var webClient = new WebClient())
             {
                 try
                 {
-                    webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted; 
+                    webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted;
                     webClient.DownloadStringAsync(new Uri("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j"));
                 }
                 catch (Exception ex)
