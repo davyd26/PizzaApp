@@ -34,32 +34,33 @@ namespace PizzaApp
 
             using (var webClient = new WebClient())
             {
-                try
-                {
                     webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted;
                     webClient.DownloadStringAsync(new Uri("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j"));
-                }
-                catch (Exception ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DisplayAlert("Erreur", "Une erreur s'est produite : " + ex.Message, "OK");
-                    });
-                }
+
             }
         }
 
         private void WebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            string pizzasStr = e.Result;
-            List<Pizza> pizzas = JsonConvert.DeserializeObject<List<Pizza>>(pizzasStr);
-
-            Device.BeginInvokeOnMainThread(() => 
+            try
             {
-                maListePizzas.ItemsSource = pizzas;
-                maListePizzas.IsVisible = true;
-                waitLayout.IsVisible = false;
-            });
+                string pizzasStr = e.Result;
+                List<Pizza> pizzas = JsonConvert.DeserializeObject<List<Pizza>>(pizzasStr);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    maListePizzas.ItemsSource = pizzas;
+                    maListePizzas.IsVisible = true;
+                    waitLayout.IsVisible = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    DisplayAlert("Erreur", "Une erreur s'est produite : " + ex.Message, "OK");
+                });
+            }
 
         }
 
