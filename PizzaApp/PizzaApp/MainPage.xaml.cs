@@ -21,9 +21,17 @@ namespace PizzaApp
     {
         public E_tri current_tri = E_tri.TRI_AUCUN;
 
+        const string KEY_TRI = "tri";
+        
         public MainPage()
         {
             InitializeComponent();
+
+            if (Application.Current.Properties.ContainsKey(KEY_TRI))
+            {
+                current_tri = (E_tri)Application.Current.Properties[KEY_TRI];
+                TriButton.Source = GetImageSourceFromTri(current_tri);
+            }
 
             maListePizzas.RefreshCommand = new Command(() =>
             {
@@ -137,6 +145,9 @@ namespace PizzaApp
                     current_tri = E_tri.TRI_AUCUN;
                     break;
             }
+
+            Application.Current.Properties[KEY_TRI] = (int)current_tri;
+            Application.Current.SavePropertiesAsync();
 
             TriButton.Source = GetImageSourceFromTri(current_tri);
             RefreshList();
