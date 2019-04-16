@@ -12,18 +12,20 @@ namespace PizzaApp
 {
     public partial class MainPage : ContentPage
     {
-        List<Pizza> pizzas = null;
-
+        
         public MainPage()
         {
             InitializeComponent();
 
-            string pizzasStr = string.Empty;
+            maListePizzas.IsVisible = false;
+            waitLayout.IsVisible = true;
+
             using (var webClient = new WebClient())
             {
                 try
                 {
-                    pizzasStr = webClient.DownloadString("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j");
+                    webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted; 
+                    webClient.DownloadDataAsync(new Uri("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j"));
                 }
                 catch (Exception ex)
                 {
@@ -33,10 +35,21 @@ namespace PizzaApp
                     });
                 }
             }
-
-            pizzas = JsonConvert.DeserializeObject<List<Pizza>>(pizzasStr);
-
-            maListePizzas.ItemsSource = pizzas;
         }
+
+        private void WebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            string pizzasStr = e.Result;
+            List<Pizza> pizzas = JsonConvert.DeserializeObject<List<Pizza>>(pizzasStr);
+
+            Device.BeginInvokeOnMainThread(() => 
+            {
+                maListePizzas.ItemsSource = pizzas;
+                maListePizzas.IsVisible = true;
+                waitLayout.IsVisible = false;
+            });
+
+        }
+
     }
 }

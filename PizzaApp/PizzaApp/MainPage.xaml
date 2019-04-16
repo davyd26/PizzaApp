@@ -15,8 +15,15 @@
 			TextColor="White" VerticalOptions="Center" />
         </StackLayout>
     </NavigationPage.TitleView>
-    
-    <StackLayout>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
         <ListView x:Name="maListePizzas" RowHeight="100">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -68,5 +75,12 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+        <StackLayout x:Name="waitLayout"
+            BackgroundColor="White"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+            <ActivityIndicator IsRunning="True"/>
+
+        </StackLayout>
+    </Grid>
 </ContentPage>
