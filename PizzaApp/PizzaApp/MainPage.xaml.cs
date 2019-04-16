@@ -20,12 +20,14 @@ namespace PizzaApp
             maListePizzas.IsVisible = false;
             waitLayout.IsVisible = true;
 
+            //maListePizzas.RefreshCommand = new 
+
             using (var webClient = new WebClient())
             {
                 try
                 {
                     webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted; 
-                    webClient.DownloadDataAsync(new Uri("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j"));
+                    webClient.DownloadStringAsync(new Uri("https://drive.google.com/uc?export=download&id=1a4_-xGB39MvOcN_IybfHlDv7tlDo7l5j"));
                 }
                 catch (Exception ex)
                 {
