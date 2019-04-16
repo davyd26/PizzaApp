@@ -5,7 +5,7 @@ using PizzaApp.extensions;
 
 namespace PizzaApp.Model
 {
-    class Pizza
+    public class Pizza
     {
         public string Nom { get; set; }
         public string ImageUrl { get; set; }
