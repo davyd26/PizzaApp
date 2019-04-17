@@ -16,7 +16,8 @@ namespace PizzaApp
     {
         TRI_AUCUN,
         TRI_NOM,
-        TRI_PRIX
+        TRI_PRIX,
+        TRI_FAV
     }
 
     public partial class MainPage : ContentPage
@@ -24,16 +25,18 @@ namespace PizzaApp
         public E_tri current_tri = E_tri.TRI_AUCUN;
 
         const string KEY_TRI = "tri";
+        const string KEY_FAV = "fav";
 
         string tempFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
         string jsonFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "pizzas.json");
-
 
         List<string> PizzasFav = new List<string>();
 
         public MainPage()
         {
             InitializeComponent();
+
+            LoadFavList();
 
             if (Application.Current.Properties.ContainsKey(KEY_TRI))
             {
@@ -66,12 +69,28 @@ namespace PizzaApp
                 case E_tri.TRI_PRIX:
                     retValue = "sort_prix.png";
                     break;
+                case E_tri.TRI_FAV:
+                    retValue = "sort_fav.png";
+                    break;
                 default:
                     retValue = "sort_none.png";
                     break;
             }
 
             return retValue;
+        }
+
+        public void SaveFavList()
+        {
+            Application.Current.Properties[KEY_FAV] = string.Join(",", PizzasFav.ToArray<string>());
+        }
+
+        public void LoadFavList()
+        {
+            if (Application.Current.Properties.ContainsKey(KEY_FAV))
+            {
+                PizzasFav = Application.Current.Properties[KEY_FAV].ToString().Split(',').ToList();
+            }
         }
 
         public List<Pizza> GetPizzasFromTri(E_tri t, List<Pizza> l)
@@ -89,6 +108,9 @@ namespace PizzaApp
                     break;
                 case E_tri.TRI_PRIX:
                     retValue = newList.OrderByDescending(f => f.Prix).ToList<Pizza>();
+                    break;
+                case E_tri.TRI_FAV:
+                    retValue = newList.Where(s => PizzasFav.Contains(s.Nom) == true).OrderBy(f => f.Nom).ToList<Pizza>();
                     break;
                 default:
                     retValue = newList;
@@ -142,6 +164,9 @@ namespace PizzaApp
                 PizzasFav.Add(pizzaCell.pizza.Nom);
             else if (!pizzaCell.isFavorite && isinFavList)
                 PizzasFav.Remove(pizzaCell.pizza.Nom);
+
+            SaveFavList();
+            RefreshList();
         }
 
         private List<PizzaCell> GetPizzaCells(List<Pizza> p, List<string> f)
@@ -174,6 +199,9 @@ namespace PizzaApp
                     current_tri = E_tri.TRI_PRIX;
                     break;
                 case E_tri.TRI_PRIX:
+                    current_tri = E_tri.TRI_FAV;
+                    break;
+                case E_tri.TRI_FAV:
                     current_tri = E_tri.TRI_AUCUN;
                     break;
                 default:
