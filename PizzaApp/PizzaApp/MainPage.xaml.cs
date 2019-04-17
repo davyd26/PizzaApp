@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using PizzaApp.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -22,10 +24,21 @@ namespace PizzaApp
         public E_tri current_tri = E_tri.TRI_AUCUN;
 
         const string KEY_TRI = "tri";
-        
+
+        string tempFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
+        string jsonFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "pizzas.json");
+
+
+        List<string> PizzasFav = new List<string>();
+
         public MainPage()
         {
             InitializeComponent();
+
+            PizzasFav.Add("4 fromages");
+            PizzasFav.Add("indienne");
+            PizzasFav.Add("tartiflette");
+
 
             if (Application.Current.Properties.ContainsKey(KEY_TRI))
             {
@@ -112,7 +125,7 @@ namespace PizzaApp
 
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    maListePizzas.ItemsSource = GetPizzasFromTri(current_tri, pizzas);
+                    maListePizzas.ItemsSource = GetPizzaCells(GetPizzasFromTri(current_tri, pizzas), PizzasFav);
                     maListePizzas.IsVisible = true;
                     waitLayout.IsVisible = false;
                 });
@@ -124,6 +137,35 @@ namespace PizzaApp
                     DisplayAlert("Erreur", "Une erreur s'est produite : " + ex.Message, "OK");
                 });
             }
+        }
+
+        private void OnFavPizzaChanged(PizzaCell pizzaCell)
+        {
+            bool isinFavList = PizzasFav.Contains(pizzaCell.pizza.Nom);
+
+            if (pizzaCell.isFavorite && !isinFavList)
+                PizzasFav.Add(pizzaCell.pizza.Nom);
+            else if (!pizzaCell.isFavorite && isinFavList)
+                PizzasFav.Remove(pizzaCell.pizza.Nom);
+        }
+
+        private List<PizzaCell> GetPizzaCells(List<Pizza> p, List<string> f)
+        {
+            List<PizzaCell> ret = new List<PizzaCell>();
+
+            if (p == null)
+            {
+                return ret;
+            }
+
+            foreach (Pizza pizza in p)
+            {
+                bool isFav = f.Contains(pizza.Nom);
+
+                ret.Add(new PizzaCell { pizza = pizza, isFavorite = isFav, FavChangedAction = OnFavPizzaChanged });
+            }
+
+            return ret;
         }
 
         private void TriButton_Clicked(object sender, EventArgs e)
