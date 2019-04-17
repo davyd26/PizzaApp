@@ -25,16 +25,12 @@ namespace PizzaApp.Model
             {
                 Pizza param = obj as Pizza;
 
-                Console.WriteLine("FavClickCommand: " + param.IngredientsStr);
-
                 isFavorite = !isFavorite;
 
                 OnPropertyChanged("ImageSourceFav");
 
                 FavChangedAction.Invoke(this);
-
             });
-
         }
 
         protected void OnPropertyChanged(string name)

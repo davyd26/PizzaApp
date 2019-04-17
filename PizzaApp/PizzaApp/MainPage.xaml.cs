@@ -35,11 +35,6 @@ namespace PizzaApp
         {
             InitializeComponent();
 
-            PizzasFav.Add("4 fromages");
-            PizzasFav.Add("indienne");
-            PizzasFav.Add("tartiflette");
-
-
             if (Application.Current.Properties.ContainsKey(KEY_TRI))
             {
                 current_tri = (E_tri)Application.Current.Properties[KEY_TRI];
@@ -170,8 +165,6 @@ namespace PizzaApp
 
         private void TriButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("TriButton_Clicked");
-
             switch (current_tri)
             {
                 case E_tri.TRI_AUCUN:
